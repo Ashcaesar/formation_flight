@@ -18,5 +18,25 @@
     <ClCompile Include="Formation.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="function.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Uav.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="parameter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="funciton.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="parameter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Uav.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

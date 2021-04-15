@@ -1,20 +1,87 @@
-﻿// Formation.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
+﻿#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <ctime>
+#include "Uav.h"
+#include "funciton.h"
+#include "parameter.h"
 
-#include <iostream>
+using namespace std;
+Uav uav[SIZE + 1];
+Uav *p = uav;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	double dis_to_target, angle_to_target;
+	axis p_cg = { 0,0,0 }, temp_acceleration = { 0,0,0 };
+	srand((unsigned)time(NULL));
+	ofstream outfile_index, outfile_pos, outfile_vel, outfile_acce, outfile_form, outfile_formdispersion;
+	outfile_index.open("index.dat", ios::out | ios::trunc);
+	outfile_pos.open("position.dat", ios::out | ios::trunc);
+	outfile_vel.open("velocity.dat", ios::out | ios::trunc);
+	outfile_acce.open("acceleration.dat", ios::out | ios::trunc);
+	outfile_form.open("finalpos.dat", ios::out | ios::trunc);
+	outfile_formdispersion.open("formdispersion.dat", ios::out | ios::trunc);
+
+	/*-------------------------集结部分-------------------------*/
+	cout << "*-------------------------集结模块-------------------------*" << endl;
+	double t = 0;
+	int num_crash = 0;
+	initial_assemble();
+	while (t<=100) {
+		for (int i = 1; i <= SIZE; i++) {
+			outfile_pos << setprecision(5) << (p + i)->m_position.x << " " << (p + i)->m_position.y << " " << (p + i)->m_position.z << endl;
+			outfile_vel << setprecision(5) << (p + i)->m_velocity.x << " " << (p + i)->m_velocity.y << " " << (p + i)->m_velocity.z << endl;
+			outfile_acce << setprecision(5) << (p + i)->m_acceleration.x << " " << (p + i)->m_acceleration.y << " " << (p + i)->m_acceleration.z << endl;
+		}
+		p_cg = get_avr_position();
+		dis_to_target = get_dis(p_cg, p_assemble);
+		angle_to_target = get_angle(p_cg, p_assemble);
+		outfile_index << setprecision(5) << dispersion_of_vel() << " " << dispersion_of_pos() << " " << dis_to_target << " " << angle_to_target << " " << get_min_dis() << endl;
+		if (dis_to_target < 50 && angle_to_target < 30) break;
+		for (int i = 1; i <= SIZE; i++) (p + i)->update_acceleration(get_acceleration_assemble(i));
+		for (int i = 1; i <= SIZE; i++) {
+			(p + i)->update_velocity();
+			(p + i)->update_position();
+			(p + i)->update_angle();
+		}
+		num_crash += crash();
+		t += delt;
+	}
+	cout << "集结完成，用时" << t << "秒，发生" << num_crash << "次碰撞" << endl << endl;
+
+	/*-------------------------编队部分-------------------------*/
+	cout << "*-------------------------编队模块-------------------------*" << endl;
+	t = 0;
+	num_crash = 0;
+	initial_form();
+	while (t <= 100) {
+		for (int i = 1; i <= SIZE; i++) {
+			outfile_pos << setprecision(5) << (p + i)->m_position.x << " " << (p + i)->m_position.y << " " << (p + i)->m_position.z << endl;
+			outfile_vel << setprecision(5) << (p + i)->m_velocity.x << " " << (p + i)->m_velocity.y << " " << (p + i)->m_velocity.z << endl;
+			outfile_acce << setprecision(5) << (p + i)->m_acceleration.x << " " << (p + i)->m_acceleration.y << " " << (p + i)->m_acceleration.z << endl;
+		}
+		p_cg = get_avr_position();
+		dis_to_target = get_dis(p_cg, p_final);
+		angle_to_target = get_angle(p_cg, p_final);
+		outfile_index << setprecision(5) << dispersion_of_vel() << " " << dispersion_of_pos() << " " << dis_to_target << " " << angle_to_target << " " << get_min_dis() << endl;
+		outfile_formdispersion << dispersion_of_form() << endl;
+		if (dis_to_target < 50 && angle_to_target < 20) break;
+		for (int i = 1; i <= SIZE; i++) (p + i)->m_acceleration = get_acceleration_form(i);
+		for (int i = 0; i <= SIZE; i++) {
+			(p + i)->m_velocity = (p + i)->m_velocity + delt * (p + i)->m_acceleration;
+			(p + i)->update_position();
+			(p + i)->update_angle();
+		}
+		num_crash += crash();
+		t += delt;
+	}
+	cout << "编队完成，用时" << t << "秒，发生" << num_crash << "次碰撞" << endl;
+	for (int i = 1; i <= SIZE; i++) outfile_form << setprecision(5) << (p + i)->m_position.x << " " << (p + i)->m_position.y << " " << (p + i)->m_position.z << endl;
+	outfile_pos.close();
+	outfile_vel.close();
+	outfile_acce.close();
+	outfile_index.close();
+	outfile_form.close();
 }
 
-// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
-
-// 入门使用技巧: 
-//   1. 使用解决方案资源管理器窗口添加/管理文件
-//   2. 使用团队资源管理器窗口连接到源代码管理
-//   3. 使用输出窗口查看生成输出和其他消息
-//   4. 使用错误列表窗口查看错误
-//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
-//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件

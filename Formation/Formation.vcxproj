@@ -72,6 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+    <IncludePath>D:\eigen3;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -152,6 +154,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Formation.cpp" />
+    <ClCompile Include="function.cpp" />
+    <ClCompile Include="parameter.cpp" />
+    <ClCompile Include="Uav.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="funciton.h" />
+    <ClInclude Include="parameter.h" />
+    <ClInclude Include="Uav.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
