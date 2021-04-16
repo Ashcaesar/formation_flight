@@ -301,8 +301,16 @@ void initial_adjmatrix() {
 		A(j, 0) = 1;
 		if (j%mat == 1 || j % mat == 2) A(j, j + 1) = 1;
 		else if (j%mat == 0 || j % mat == 4) A(j, j - 1) = 1;
+		else {
+			A(j, j - 1) = 1;
+			A(j, j + 1) = 1;
+		}
 		if (j <= 2 * mat) A(j, j + mat) = 1;
 		else if (j > 3 * mat) A(j, j - mat) = 1;
+		else {
+			A(j, j + mat) = 1;
+			A(j, j - mat) = 1;
+		}
 	}
 	
 	return;
@@ -324,9 +332,9 @@ axis f_repulsion_form(int i) {
 	for (int j = 1; j <= SIZE; j++) {
 		if (j == i) continue;
 		dis = get_dis((p + i)->m_position, (p + j)->m_position);
-		if (dis <= D_form) f = 4 * (20 - dis);
-		else if (dis <= 2 * D_form) f = 0.04 * (20 - dis);
-		else f = -0.04 * 20;
+		if (dis <= D_form) f = K4 * (D_form - dis);
+		else if (dis <= 2 * D_form) f = K5 * (D_form - dis);
+		else f = -K5 * D_form;
 		result = result + f * ((p + i)->m_position - (p + j)->m_position) / (dis + 1e-6);
 	}
 	return result;

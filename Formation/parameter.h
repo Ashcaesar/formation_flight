@@ -14,6 +14,8 @@
 #define K1 1.5
 #define K2 0.1
 #define K3 0.2
+#define K4 4
+#define K5 0.04
 #define ALPHA 0.5
 #define delt 0.01
 #define PI 3.14159265
