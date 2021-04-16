@@ -16,8 +16,8 @@ Vector3d form[SIZE + 1];
 axis pos_axis[SIZE + 1];
 axis form_axis[SIZE + 1];
 
-/*-------------------------Í¨ÓÃº¯Êı-------------------------*/
-//½á¹¹ÌåÔËËã·ûÖØÔØ
+/*-------------------------é€šç”¨å‡½æ•°-------------------------*/
+//ç»“æ„ä½“è¿ç®—ç¬¦é‡è½½
 axis operator +(const axis& a, const axis& b) {
 	axis result;
 	result.x = a.x + b.x;
@@ -50,7 +50,7 @@ axis operator /(const axis &a, const double &n) {
 	return result;
 }
 
-//×î´óÖµÏŞÖÆ
+//æœ€å¤§å€¼é™åˆ¶
 void limit(axis &num, axis &max) {
 	if (num.x > max.x) num.x = max.x;
 	else if (num.x < -max.x) num.x = -max.x;
@@ -60,7 +60,7 @@ void limit(axis &num, axis &max) {
 	else if (num.z < -max.z) num.z = -max.z;
 }
 
-//¾àÀë¼ÆËã 2D¡¢3D
+//è·ç¦»è®¡ç®— 2Dã€3D
 double get_dis(double x, double y) {
 	return sqrt(pow(x, 2) + pow(y, 2));
 }
@@ -68,7 +68,7 @@ double get_dis(axis a, axis b) {
 	return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2) + pow(a.z - b.z, 2));
 }
 
-//¼ÆËãÆ½¾ù×ø±ê
+//è®¡ç®—å¹³å‡åæ ‡
 axis get_avr_position() {
 	axis result = { 0,0,0 };
 	for (int i = 1; i <= SIZE; i++) result = result + (p + i)->m_position;
@@ -76,7 +76,7 @@ axis get_avr_position() {
 	return result;
 }
 
-//¼ÆËãÆ½¾ùËÙ¶È
+//è®¡ç®—å¹³å‡é€Ÿåº¦
 axis get_avr_velocity() {
 	axis result = { 0,0,0 };
 	for (int i = 1; i <= SIZE; i++) result = result + (p + i)->m_velocity;
@@ -84,7 +84,7 @@ axis get_avr_velocity() {
 	return result;
 }
 
-//¼ÆËãÄ¿±êÆ«Àë½Ç
+//è®¡ç®—ç›®æ ‡åç¦»è§’
 double get_angle(axis now, axis target) {
 	double v, dis, angle;
 	axis vector_v = { 0,0,0 }, vector_dis = { 0,0,0 };
@@ -97,7 +97,7 @@ double get_angle(axis now, axis target) {
 	return angle;
 }
 
-//¼ÆËã×îĞ¡»ú¼ä¾àÀë
+//è®¡ç®—æœ€å°æœºé—´è·ç¦»
 double get_min_dis() {
 	double dis, min_dis = 1000;
 	for (int i = 1; i <= SIZE; i++) {
@@ -110,7 +110,7 @@ double get_min_dis() {
 	return min_dis;
 }
 
-//¼ÆËãËÙ¶ÈÀëÉ¢¶È
+//è®¡ç®—é€Ÿåº¦ç¦»æ•£åº¦
 double dispersion_of_vel() {
 	double dis = 0, result = 0;
 	for (int i = 1; i <= SIZE; i++) {
@@ -124,7 +124,7 @@ double dispersion_of_vel() {
 	return result;
 }
 
-//¼ÆËãÎ»ÖÃÀëÉ¢¶È
+//è®¡ç®—ä½ç½®ç¦»æ•£åº¦
 double dispersion_of_pos() {
 	double dis = 0, result = 0;
 	for (int i = 1; i <= SIZE; i++) {
@@ -138,7 +138,7 @@ double dispersion_of_pos() {
 	return result;
 }
 
-//¼ì²âÅö×²
+//æ£€æµ‹ç¢°æ’
 int crash() {
 	int num = 0;
 	double dis;
@@ -152,8 +152,8 @@ int crash() {
 	return num;
 }
 
-/*-------------------------¼¯½á²¿·Ö-------------------------*/
-//³õÊ¼»¯ÎŞÈË»ú²ÎÊı£¬±£Ö¤Æğ·É°²È«¾àÀë
+/*-------------------------é›†ç»“éƒ¨åˆ†-------------------------*/
+//åˆå§‹åŒ–æ— äººæœºå‚æ•°ï¼Œä¿è¯èµ·é£å®‰å…¨è·ç¦»
 void initial_assemble() {
 	int n;
 	do {
@@ -170,11 +170,11 @@ void initial_assemble() {
 		(p + i)->m_phi = atan2((p + i)->m_velocity.z, sqrt(pow((p + i)->m_velocity.x, 2) + pow((p + i)->m_velocity.y, 2)));
 		(p + i)->m_theta = atan2((p + i)->m_velocity.y, (p + i)->m_velocity.x);
 	}
-	cout << "ÎŞÈË»ú³õÊ¼»¯Íê³É" << endl;
+	cout << "æ— äººæœºåˆå§‹åŒ–å®Œæˆ" << endl;
 	return;
 }
 
-//C-SÄ£ĞÍËÙ¶ÈÆ¥ÅäÏî
+//C-Sæ¨¡å‹é€Ÿåº¦åŒ¹é…é¡¹
 axis f_speedmatch(int i) {
 	int num = 0;
 	double dis, aij;
@@ -192,7 +192,7 @@ axis f_speedmatch(int i) {
 	return result;
 }
 
-//C-SÄ£ĞÍ³âÁ¦Ïî
+//C-Sæ¨¡å‹æ–¥åŠ›é¡¹
 axis f_repulsion(int i) {
 	double dis, f;
 	axis result = { 0,0,0 };
@@ -207,7 +207,7 @@ axis f_repulsion(int i) {
 	return result;
 }
 
-//C-SÄ£ĞÍÄ¿±êÒıµ¼Ïî
+//C-Sæ¨¡å‹ç›®æ ‡å¼•å¯¼é¡¹
 axis f_target(int i) {
 	double dis, g;
 	axis result = { 0,0,0 };
@@ -217,29 +217,29 @@ axis f_target(int i) {
 	return result;
 }
 
-//¼ÆËã¼ÓËÙ¶ÈÏî
+//è®¡ç®—åŠ é€Ÿåº¦é¡¹
 axis get_acceleration_assemble(int i) {
 	axis result;
 	result = f_speedmatch(i) + f_repulsion(i) + f_target(i);
 	return result;
 }
 
-/*-------------------------±à¶Ó²¿·Ö-------------------------*/
-//¼ÆËãÅ·Ê½±ä»»¾ØÕó
+/*-------------------------ç¼–é˜Ÿéƒ¨åˆ†-------------------------*/
+//è®¡ç®—æ¬§å¼å˜æ¢çŸ©é˜µ
 void get_rotation_matrix() {
 	T = Isometry3d::Identity();
 	AngleAxisd rotation_vector_x(p->m_phi, Vector3d(1, 0, 0));
 	AngleAxisd rotation_vector_z(p->m_theta - PI / 2, Vector3d(0, 0, 1));
 	T.rotate(rotation_vector_z);
 	T.rotate(rotation_vector_x);
-	//³¤»ú×ø±êÏµ
+	//é•¿æœºåæ ‡ç³»
 	T.pretranslate(Vector3d(0, 0, 0));
 	for (int i = 0; i <= SIZE; i++) {
 		form_axis[i].x = (T * form[i])[0];
 		form_axis[i].y = (T * form[i])[1];
 		form_axis[i].z = (T * form[i])[2];
 	}
-	//ÊÀ½ç×ø±êÏµ
+	//ä¸–ç•Œåæ ‡ç³»
 	T.pretranslate(Vector3d(p->m_position.x, p->m_position.y, p->m_position.z));
 	for (int i = 0; i <= SIZE; i++) {
 		pos_axis[i].x = (T * form[i])[0];
@@ -248,10 +248,10 @@ void get_rotation_matrix() {
 	}
 }
 
-//±à¶Ó²ÎÊı³õÊ¼»¯
+//ç¼–é˜Ÿå‚æ•°åˆå§‹åŒ–
 void initial_form() {
-	//³õÊ¼»¯ĞéÄâ³¤»ú²ÎÊı
-	cout << "³õÊ¼»¯ĞéÄâ³¤»ú²ÎÊı:" << endl;
+	//åˆå§‹åŒ–è™šæ‹Ÿé•¿æœºå‚æ•°
+	cout << "åˆå§‹åŒ–è™šæ‹Ÿé•¿æœºå‚æ•°:" << endl;
 	double speed;
 	p->m_position = get_avr_position();
 	p->m_phi = atan2(p_final.z - p->m_position.z, sqrt(pow(p_final.x - p->m_position.x, 2) + pow(p_final.y - p->m_position.y, 2)));
@@ -261,21 +261,21 @@ void initial_form() {
 	p->m_velocity.y = speed * cos(p->m_phi)*sin(p->m_theta);
 	p->m_velocity.z = speed * sin(p->m_phi);
 	p->m_acceleration = { 0,0,0 };
-	cout << "×ø±ê:(" << setw(5) << fixed << setprecision(2) << p->m_position.x << "," << p->m_position.y << "," << p->m_position.z << ")" << endl;
-	cout << "ËÙ¶È:(" << setw(5) << fixed << setprecision(2) << p->m_velocity.x << "," << p->m_velocity.y << "," << p->m_velocity.z << ")" << endl;
-	cout << "Æ«º½½Ç:" << p->m_theta * 180 / PI << "¡ã " << "¸©Ñö½Ç:" << p->m_phi * 180 / PI << "¡ã" << endl;
+	cout << "åæ ‡:(" << setw(5) << fixed << setprecision(2) << p->m_position.x << "," << p->m_position.y << "," << p->m_position.z << ")" << endl;
+	cout << "é€Ÿåº¦:(" << setw(5) << fixed << setprecision(2) << p->m_velocity.x << "," << p->m_velocity.y << "," << p->m_velocity.z << ")" << endl;
+	cout << "åèˆªè§’:" << p->m_theta * 180 / PI << "Â° " << "ä¿¯ä»°è§’:" << p->m_phi * 180 / PI << "Â°" << endl;
 	cout << endl;
-	//³õÊ¼»¯Ïà¶ÔÎ»ÖÃ
+	//åˆå§‹åŒ–ç›¸å¯¹ä½ç½®
 	double d = D_form;
 	Vector3d new_form[SIZE + 1];
 	form[0] << 0, 0, 0;
 	form[1] << -2 * d, 2 * d, 0;	form[2] << -d, 2 * d, 0;	form[3] << 0, 2 * d, 0;		form[4] << d, 2 * d, 0;		form[5] << 2 * d, 2 * d, 0;
-	form[6] << -2 * d, d, 0;		form[7] << -d, d, 0;		form[8] << 0, d, 0;			form[9] << d, d, 0;			form[10] << 2 * d, d, 0;
-	form[11] << -2 * d, 0, 0;		form[12] << -d, 0, 0;		form[13] << 0, 0, 0;		form[14] << d, 0, 0;		form[15] << 2 * d, 0, 0;
-	form[16] << -2 * d, -d, 0;		form[17] << -d, -d, 0;		form[18] << 0, -d, 0;		form[19] << d, -d, 0;		form[20] << 2 * d, -d, 0;
+	form[6] << -2 * d, d, 0;	form[7] << -d, d, 0;		form[8] << 0, d, 0;		form[9] << d, d, 0;		form[10] << 2 * d, d, 0;
+	form[11] << -2 * d, 0, 0;	form[12] << -d, 0, 0;		form[13] << 0, 0, 0;		form[14] << d, 0, 0;		form[15] << 2 * d, 0, 0;
+	form[16] << -2 * d, -d, 0;	form[17] << -d, -d, 0;		form[18] << 0, -d, 0;		form[19] << d, -d, 0;		form[20] << 2 * d, -d, 0;
 	form[21] << -2 * d, -2 * d, 0;	form[22] << -d, -2 * d, 0;	form[23] << 0, -2 * d, 0;	form[24] << d, -2 * d, 0;	form[25] << 2 * d, -2 * d, 0;
 	get_rotation_matrix();
-	//·ÖÅä¶ÔÓ¦ÎŞÈË»ú
+	//åˆ†é…å¯¹åº”æ— äººæœº
 	for (int i = 1; i <= SIZE; i++) {
 		int min_id = -1;
 		double dis, min_dis = 1000;
@@ -287,13 +287,13 @@ void initial_form() {
 			}
 		}
 		swap(*(p+i), *(p+min_id));
-		//cout << "±à¶Ó" << setw(2) << setfill('0') << i << "ºÅÎ»ÖÃÒÑ·ÖÅä¸ø" << setw(2) << setfill('0') << min_id << "ºÅÎŞÈË»ú" << endl;
+		//cout << "ç¼–é˜Ÿ" << setw(2) << setfill('0') << i << "å·ä½ç½®å·²åˆ†é…ç»™" << setw(2) << setfill('0') << min_id << "å·æ— äººæœº" << endl;
 	}
 	initial_adjmatrix();
 	
 }
 
-//ÁÚ½Ó¾ØÕó¸³Öµ
+//é‚»æ¥çŸ©é˜µèµ‹å€¼
 void initial_adjmatrix() {
 	A.setZero();
 	for (int j = 0; j <= SIZE; j++) {
@@ -316,7 +316,7 @@ void initial_adjmatrix() {
 	return;
 }
 
-//±à¶Ó²¿·Ö¼ÓËÙ¶ÈÏî
+//ç¼–é˜Ÿéƒ¨åˆ†åŠ é€Ÿåº¦é¡¹
 axis f_form(int i) {
 	axis result = { 0,0,0 };
 	for (int j = 0; j <= SIZE; j++) {
@@ -325,7 +325,7 @@ axis f_form(int i) {
 	return result;
 }
 
-//±à¶Ó²¿·Ö³âÁ¦Ïî
+//ç¼–é˜Ÿéƒ¨åˆ†æ–¥åŠ›é¡¹
 axis f_repulsion_form(int i) {
 	double dis, f;
 	axis result = { 0,0,0 };
@@ -340,14 +340,14 @@ axis f_repulsion_form(int i) {
 	return result;
 }
 
-//¼ÆËã¼ÓËÙ¶ÈÏî
+//è®¡ç®—åŠ é€Ÿåº¦é¡¹
 axis get_acceleration_form(int i) {
 	axis result = { 0,0,0 };
 	result = f_form(i) + f_repulsion_form(i) + p->m_acceleration;
 	return result;
 }
 
-//¼ÆËã¶ÓĞÎÀëÉ¢¶È
+//è®¡ç®—é˜Ÿå½¢ç¦»æ•£åº¦
 double dispersion_of_form() {
 	double result = 0;
 	get_rotation_matrix();
